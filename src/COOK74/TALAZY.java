@@ -1,15 +1,14 @@
-package JUNE15;
+package COOK74;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class TALAZY {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -36,55 +35,32 @@ class CHPLGNS {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                long n = in.nextInt(),
+                        b = in.nextInt(),
+                        m = in.nextInt();
 
-                Node[] nodes = new Node[n];
-                for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
+                long s = 0;
 
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
+                while (n > 0) {
+                    if (n % 2 == 0) {
+                        s += n / 2 * m;
 
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
-                        }
+                        n -= n / 2;
+                    } else {
+                        s += (n + 1) / 2 * m;
+
+                        n -= (n + 1) / 2;
                     }
 
-                    nodes[j] = new Node(j, maxX);
+                    s += b;
+
+                    m *= 2;
                 }
 
-                Arrays.sort(nodes, new Comparator<Node>() {
+                s -= b;
 
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
-                    }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
+                out.println(s);
             }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
-            }
-
         }
 
     }

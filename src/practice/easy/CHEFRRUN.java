@@ -1,15 +1,15 @@
-package JUNE15;
+package practice.easy;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class CHEFRRUN {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -38,53 +38,64 @@ class CHPLGNS {
             for (int i = 0; i < t; i++) {
                 int n = in.nextInt();
 
-                Node[] nodes = new Node[n];
+                int[] a = new int[n];
+
                 for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
+                    int aj = in.nextInt();
 
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
+                    a[j] = aj;
+                }
 
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
+                for (int j = 0; j < n; j++) {
+                    a[j] = (j + a[j] + 1) % n;
+                }
+
+                boolean[] v = new boolean[n],
+                        c = new boolean[n];
+
+                for (int j = 0; j < n; j++) {
+                    if (v[j]) {
+                        continue;
+                    }
+
+                    v[j] = true;
+
+                    ArrayList<Integer> list = new ArrayList<>();
+                    list.add(j);
+
+                    int aj = a[j];
+
+                    while (!v[aj]) {
+                        v[aj] = true;
+
+                        list.add(aj);
+
+                        aj = a[aj];
+                    }
+
+                    if (list.contains(aj)) {
+                        c[aj] = true;
+
+                        int ak = a[aj];
+
+                        while (ak != aj) {
+                            c[ak] = true;
+
+                            ak = a[ak];
                         }
                     }
-
-                    nodes[j] = new Node(j, maxX);
                 }
 
-                Arrays.sort(nodes, new Comparator<Node>() {
+                int s = 0;
 
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
+                for (boolean cj : c) {
+                    if (cj) {
+                        s++;
                     }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
                 }
 
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
+                out.println(s);
             }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
-            }
-
         }
 
     }

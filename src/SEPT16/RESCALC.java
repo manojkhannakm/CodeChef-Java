@@ -1,15 +1,14 @@
-package JUNE15;
+package SEPT16;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class RESCALC {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -38,51 +37,82 @@ class CHPLGNS {
             for (int i = 0; i < t; i++) {
                 int n = in.nextInt();
 
-                Node[] nodes = new Node[n];
+                int[] c = new int[n];
+                int[][] d = new int[n][];
+
                 for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
+                    int cj = in.nextInt();
 
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
+                    c[j] = cj;
+                    d[j] = new int[cj];
 
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
+                    for (int k = 0; k < cj; k++) {
+                        int djk = in.nextInt();
+
+                        d[j][k] = djk;
+                    }
+                }
+
+                int[] p = new int[n];
+
+                for (int j = 0; j < n; j++) {
+                    int pj = c[j];
+                    int[] q = new int[6];
+
+                    for (int k = 0; k < c[j]; k++) {
+                        q[d[j][k] - 1]++;
+                    }
+
+                    Arrays.sort(q);
+
+                    for (int k = 0; k < 3; k++) {
+                        int qk = q[k];
+
+                        for (int l = k; l < 6; l++) {
+                            q[l] -= qk;
+                        }
+
+                        if (k == 0) {
+                            pj += qk * 4;
+                        } else if (k == 1) {
+                            pj += qk * 2;
+                        } else if (k == 2) {
+                            pj += qk;
                         }
                     }
 
-                    nodes[j] = new Node(j, maxX);
+                    p[j] = pj;
                 }
 
-                Arrays.sort(nodes, new Comparator<Node>() {
+                Player[] players = new Player[n];
 
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
+                for (int j = 0; j < n; j++) {
+                    players[j] = new Player(j, p[j]);
+                }
+
+                Arrays.sort(players, (o1, o2) -> Integer.compare(o1.p, o2.p));
+
+                if (n >= 2 && players[n - 2].p == players[n - 1].p) {
+                    out.println("tie");
+                } else {
+                    int j = players[n - 1].i;
+
+                    if (j == 0) {
+                        out.println("chef");
+                    } else {
+                        out.println(j + 1);
                     }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
                 }
             }
         }
 
-        private class Node {
+        private class Player {
 
-            private int index, x;
+            private final int i, p;
 
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
+            public Player(int i, int p) {
+                this.i = i;
+                this.p = p;
             }
 
         }

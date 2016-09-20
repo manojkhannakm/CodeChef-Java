@@ -1,15 +1,14 @@
-package JUNE15;
+package SEPT16;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class CHFNFRN {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -36,53 +35,99 @@ class CHPLGNS {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                int n = in.nextInt(),
+                        m = in.nextInt();
 
-                Node[] nodes = new Node[n];
-                for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
+                int[] a = new int[m],
+                        b = new int[m];
 
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
+                for (int j = 0; j < m; j++) {
+                    int aj = in.nextInt(),
+                            bj = in.nextInt();
 
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
-                        }
-                    }
-
-                    nodes[j] = new Node(j, maxX);
+                    a[j] = aj;
+                    b[j] = bj;
                 }
 
-                Arrays.sort(nodes, new Comparator<Node>() {
+                Graph graph = new Graph(n, m, a, b);
+                graph.complement();
 
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
-                    }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
+                out.println(graph.bipartite() ? "YES" : "NO");
             }
         }
 
-        private class Node {
+        private class Graph {
 
-            private int index, x;
+            private int n;
 
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
+            private boolean[][] g;
+            private boolean[] e;
+            private int[] c;
+
+            public Graph(int n, int m, int[] a, int[] b) {
+                this.n = n;
+
+                g = new boolean[n][n];
+
+                for (int i = 0; i < m; i++) {
+                    int ai = a[i],
+                            bi = b[i];
+
+                    if (ai != bi) {
+                        g[ai - 1][bi - 1] = g[bi - 1][ai - 1] = true;
+                    }
+                }
+
+                e = new boolean[n];
+                c = new int[n];
+            }
+
+            public void complement() {
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        g[i][j] = !g[i][j];
+                    }
+                }
+            }
+
+            private boolean dfs(int i) {
+                int ci = c[i];
+
+                for (int j = 0; j < n; j++) {
+                    if (i != j && g[i][j]) {
+                        int cj = c[j];
+
+                        if (cj == 0) {
+                            c[j] = ci == 1 ? 2 : 1;
+                        } else if (cj == ci) {
+                            return false;
+                        }
+                    }
+                }
+
+                e[i] = true;
+
+                for (int j = 0; j < n; j++) {
+                    if (i != j && g[i][j] && !e[j] && !dfs(j)) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            public boolean bipartite() {
+                for (int i = 0; i < n; i++) {
+                    if (!e[i]) {
+                        c[i] = 1;
+
+                        if (!dfs(i)) {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
             }
 
         }

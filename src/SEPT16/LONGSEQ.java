@@ -1,15 +1,14 @@
-package JUNE15;
+package SEPT16;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class LONGSEQ {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -36,55 +35,19 @@ class CHPLGNS {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                String d = in.nextLine();
 
-                Node[] nodes = new Node[n];
+                int n = d.length(),
+                        c = 0;
+
                 for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
-
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
-
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
-                        }
+                    if (d.charAt(j) == '0') {
+                        c++;
                     }
-
-                    nodes[j] = new Node(j, maxX);
                 }
 
-                Arrays.sort(nodes, new Comparator<Node>() {
-
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
-                    }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
+                out.println(c == 1 || n - c == 1 ? "Yes" : "No");
             }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
-            }
-
         }
 
     }

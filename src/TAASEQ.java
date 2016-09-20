@@ -1,15 +1,12 @@
-package JUNE15;
-
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class TAASEQ {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -38,53 +35,43 @@ class CHPLGNS {
             for (int i = 0; i < t; i++) {
                 int n = in.nextInt();
 
-                Node[] nodes = new Node[n];
+                int[] a = new int[n];
+
                 for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
+                    int aj = in.nextInt();
 
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
+                    a[j] = aj;
+                }
 
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
+                if (n <= 3) {
+                    Arrays.sort(a);
+
+                    out.println(a[0]);
+                } else {
+                    int x = -1;
+
+                    for (int j = 0, k = n - 1; j < k; j++, k--) {
+                        int d1 = a[j + 1] - a[j],
+                                d2 = a[k] - a[k - 1];
+
+                        if (d1 != d2) {
+                            if (d1 == a[k] - a[k - 2]) {
+                                x = Math.min(a[k - 1], x != -1 ? x : Integer.MAX_VALUE);
+
+                                k--;
+                            } else if (a[j + 2] - a[j] == d2) {
+                                x = Math.min(a[j + 1], x != -1 ? x : Integer.MAX_VALUE);
+
+                                j++;
+                            } else {
+                                break;
+                            }
                         }
                     }
 
-                    nodes[j] = new Node(j, maxX);
-                }
-
-                Arrays.sort(nodes, new Comparator<Node>() {
-
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
-                    }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
+                    out.println(x);
                 }
             }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
-            }
-
         }
 
     }

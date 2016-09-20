@@ -1,15 +1,12 @@
-package JUNE15;
-
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class TACNTSTR {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -32,59 +29,20 @@ class CHPLGNS {
 
     private static class Solution {
 
+        private static final int MOD = 1000000007;
+
         public void solve() {
-            int t = in.nextInt();
+            String s = in.nextLine();
 
-            for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+            long x = 1;
 
-                Node[] nodes = new Node[n];
-                for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
-
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
-
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
-                        }
-                    }
-
-                    nodes[j] = new Node(j, maxX);
-                }
-
-                Arrays.sort(nodes, new Comparator<Node>() {
-
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
-                    }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
-            }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
+            for (int i = 0; i < s.length(); i++) {
+                x = x * (26 - (s.charAt(i) - 'A')) % MOD;
             }
 
+            x--;
+
+            out.println(x);
         }
 
     }

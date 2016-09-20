@@ -1,15 +1,14 @@
-package JUNE15;
+package SEPT16;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class LEXOPAL {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -36,55 +35,34 @@ class CHPLGNS {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                char[] s = in.nextLine().toCharArray();
 
-                Node[] nodes = new Node[n];
-                for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
+                int l = 0,
+                        r = s.length - 1;
 
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
+                while (l <= r) {
+                    char sl = s[l],
+                            sr = s[r];
 
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
-                        }
+                    if (sl != '.' && sr != '.' && sl != sr) {
+                        s = null;
+                        break;
                     }
 
-                    nodes[j] = new Node(j, maxX);
-                }
-
-                Arrays.sort(nodes, new Comparator<Node>() {
-
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
+                    if (sl == '.' && sr == '.') {
+                        s[l] = s[r] = 'a';
+                    } else if (sl == '.') {
+                        s[l] = sr;
+                    } else if (sr == '.') {
+                        s[r] = sl;
                     }
 
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
+                    l++;
+                    r--;
                 }
 
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
+                out.println(s != null ? new String(s) : "-1");
             }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
-            }
-
         }
 
     }

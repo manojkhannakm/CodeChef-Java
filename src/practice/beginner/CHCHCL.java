@@ -1,15 +1,14 @@
-package JUNE15;
+package practice.beginner;
 
 import java.io.*;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class CHPLGNS {
+class CHCHCL {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -25,7 +24,12 @@ class CHPLGNS {
             in = new InputReader(System.in);
         }
 
+        long startTime = System.currentTimeMillis();
+
         new Solution().solve();
+
+        out.println("");
+        out.println((System.currentTimeMillis() - startTime) / 1000.0f + " secs");
 
         out.close();
     }
@@ -36,55 +40,12 @@ class CHPLGNS {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                int m = in.nextInt(),
+                        n = in.nextInt();
 
-                Node[] nodes = new Node[n];
-                for (int j = 0; j < n; j++) {
-                    int m = in.nextInt();
-
-                    int maxX = 0;
-                    for (int k = 0; k < m; k++) {
-                        int x = in.nextInt(),
-                                y = in.nextInt();
-
-                        x = Math.abs(x);
-                        if (maxX < x) {
-                            maxX = x;
-                        }
-                    }
-
-                    nodes[j] = new Node(j, maxX);
-                }
-
-                Arrays.sort(nodes, new Comparator<Node>() {
-
-                    @Override
-                    public int compare(Node o1, Node o2) {
-                        return Integer.compare(o1.x, o2.x);
-                    }
-
-                });
-
-                int[] counts = new int[n];
-                for (int j = 0; j < n; j++) {
-                    counts[nodes[j].index] = j;
-                }
-
-                for (int j = 0; j < n; j++) {
-                    out.print(counts[j] + " ");
-                }
+                long x = (long) m * n - 1;
+                out.println(x % 2 != 0 ? "Yes" : "No");
             }
-        }
-
-        private class Node {
-
-            private int index, x;
-
-            public Node(int index, int x) {
-                this.index = index;
-                this.x = x;
-            }
-
         }
 
     }

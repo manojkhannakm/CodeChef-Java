@@ -78,11 +78,6 @@ class CW004 {
             }
 
             @Override
-            public String toString() {
-                return "[" + p + ", " + i + "]";
-            }
-
-            @Override
             public int compareTo(Node o) {
                 if (p != o.p) {
                     return Long.compare(p, o.p);
