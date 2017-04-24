@@ -50,7 +50,7 @@ class EGRCAKE {
                     int a = n,
                             b = m;
 
-                    while (b != 0) {
+                    while (b > 0) {
                         int x = b;
                         b = a % b;
                         a = x;

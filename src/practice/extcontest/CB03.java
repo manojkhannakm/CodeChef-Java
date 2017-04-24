@@ -1,3 +1,5 @@
+package practice.extcontest;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.StringTokenizer;
@@ -6,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class CHN15C_NEW {
+class CB03 {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -29,21 +31,43 @@ class CHN15C_NEW {
 
     private static class Solution {
 
+        private int psc(char[] s) {
+            int n = s.length;
+
+            int[][] dp = new int[n][n];
+
+            for (int i = 0; i < n; i++) {
+                dp[i][i] = 1;
+            }
+
+            for (int i = 1; i < n; i++) {
+                for (int j = 0, k = j + i; j < n - i; j++, k++) {
+                    dp[j][k] = dp[j][k - 1] + dp[j + 1][k] - dp[j + 1][k - 1];
+
+                    if (s[j] == s[k]) {
+                        dp[j][k] += dp[j + 1][k - 1] + 1;
+                    }
+                }
+            }
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    out.print(dp[i][j] + " ");
+                }
+
+                out.println("");
+            }
+
+            return dp[0][n - 1];
+        }
+
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                char[] s = in.nextLine().toCharArray();
 
-                int[] a = new int[n];
-
-                for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
-                }
-
-
+                out.println(psc(s));
             }
         }
 

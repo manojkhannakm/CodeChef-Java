@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 /**
@@ -30,81 +29,11 @@ class CHN15C {
 
     private static class Solution {
 
-        private int s = Integer.MAX_VALUE;
-
-        private void inversions(int[] a, int n, int l, int r, LinkedList<Integer> list, int s) {
-            if (s >= this.s) {
-                return;
-            }
-
-            if (l > r) {
-                if (s < this.s) {
-                    this.s = s;
-                }
-
-                return;
-            }
-
-            if (a[l] <= list.getFirst()) {
-                LinkedList<Integer> list1 = new LinkedList<>(list);
-                list1.addFirst(a[l]);
-                inversions(a, n, l + 1, r, list1, s);
-            } else if (a[l] >= list.getLast()) {
-                LinkedList<Integer> list2 = new LinkedList<>(list);
-                list2.addLast(a[l]);
-                inversions(a, n, l + 1, r, list2, s);
-            } else {
-                LinkedList<Integer> list1 = new LinkedList<>(list);
-                list1.addFirst(a[l]);
-                inversions(a, n, l + 1, r, list1, s + 1);
-
-                LinkedList<Integer> list2 = new LinkedList<>(list);
-                list2.addLast(a[l]);
-                inversions(a, n, l + 1, r, list2, s + 1);
-            }
-
-            if (a[r] <= list.getFirst()) {
-                LinkedList<Integer> list3 = new LinkedList<>(list);
-                list3.addFirst(a[r]);
-                inversions(a, n, l, r - 1, list3, s);
-            } else if (a[r] >= list.getLast()) {
-                LinkedList<Integer> list4 = new LinkedList<>(list);
-                list4.addLast(a[r]);
-                inversions(a, n, l, r - 1, list4, s);
-            } else {
-                LinkedList<Integer> list3 = new LinkedList<>(list);
-                list3.addFirst(a[r]);
-                inversions(a, n, l, r - 1, list3, s + 1);
-
-                LinkedList<Integer> list4 = new LinkedList<>(list);
-                list4.addLast(a[r]);
-                inversions(a, n, l, r - 1, list4, s + 1);
-            }
-        }
-
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
 
-                int[] a = new int[n];
-
-                for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
-                }
-
-                LinkedList<Integer> list1 = new LinkedList<>();
-                list1.add(a[0]);
-                inversions(a, n, 1, n - 1, list1, 0);
-
-                LinkedList<Integer> list2 = new LinkedList<>();
-                list2.add(a[n - 1]);
-                inversions(a, n, 0, n - 2, list2, 0);
-
-                out.println(s);
             }
         }
 

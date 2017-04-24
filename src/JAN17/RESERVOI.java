@@ -1,4 +1,4 @@
-package COOK64;
+package JAN17;
 
 import java.io.*;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class SEAARASU {
+class RESERVOI {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -31,45 +31,41 @@ class SEAARASU {
 
     private static class Solution {
 
-        private int gcd(int a, int b) {
-            while (b > 0) {
-                int t = b;
-                b = a % b;
-                a = t;
-            }
-
-            return a;
-        }
-
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                int n = in.nextInt(),
+                        m = in.nextInt();
 
-                int[] a = new int[n];
+                char[][] a = new char[n][];
 
                 for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
+                    a[j] = in.nextLine().toCharArray();
                 }
 
-                long s;
+                boolean f = true;
 
-                if (n == 1) {
-                    s = a[0];
-                } else {
-                    int g = gcd(a[0], a[1]);
-
-                    for (int j = 2; j < n; j++) {
-                        g = gcd(g, a[j]);
+                for (int j = 0; j < n && f; j++) {
+                    for (int k = 0; k < m && f; k++) {
+                        if (a[j][k] == 'W') {
+                            if (j == n - 1 || k == 0 || k == m - 1
+                                    || a[j][k - 1] == 'A'
+                                    || a[j][k + 1] == 'A'
+                                    || a[j + 1][k] == 'A') {
+                                f = false;
+                            }
+                        } else if (a[j][k] == 'B') {
+                            if (j != n - 1
+                                    && (a[j + 1][k] == 'A'
+                                    || a[j + 1][k] == 'W')) {
+                                f = false;
+                            }
+                        }
                     }
-
-                    s = (long) g * n;
                 }
 
-                out.println(s);
+                out.println(f ? "yes" : "no");
             }
         }
 

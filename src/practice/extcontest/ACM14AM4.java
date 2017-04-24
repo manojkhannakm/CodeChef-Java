@@ -1,4 +1,4 @@
-package practice.peer;
+package practice.extcontest;
 
 import java.io.*;
 import java.util.Arrays;

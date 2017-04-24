@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class CHN15A {
+class XORSUB {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -29,6 +29,12 @@ class CHN15A {
 
     private static class Solution {
 
+        private static final int AI_MAX = 1000;
+
+        private int[] toBits() {
+            return null;
+        }
+
         public void solve() {
             int t = in.nextInt();
 
@@ -39,24 +45,10 @@ class CHN15A {
                 int[] a = new int[n];
 
                 for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
+                    a[j] = in.nextInt();
                 }
 
-                int x = 0;
 
-                for (int j = 0; j < n; j++) {
-                    long aj = a[j];
-
-                    aj += k;
-
-                    if (aj % 7 == 0) {
-                        x++;
-                    }
-                }
-
-                out.println(x);
             }
         }
 

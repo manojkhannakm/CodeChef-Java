@@ -1,4 +1,4 @@
-package ACMCHN15;
+package OCT16;
 
 import java.io.*;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class ACM14KP5 {
+class CHEFKEY {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -34,20 +34,20 @@ class ACM14KP5 {
         public void solve() {
             int t = in.nextInt();
 
-            for (int i = 1; i <= t; i++) {
-                int n = in.nextInt();
+            for (int i = 0; i < t; i++) {
+                int n = in.nextInt(),
+                        m = in.nextInt(),
+                        c = in.nextInt();
 
-                int[] a = new int[n];
+                int s = 0;
 
-                for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
+                for (int j = 1; j <= n; j++) {
+                    if (c % j == 0 && c / j <= m) {
+                        s++;
+                    }
                 }
 
-                Arrays.sort(a);
-
-                out.println("Case " + i + ": " + (a[n - 1] + a[n - 2] + a[n - 3]));
+                out.println(s);
             }
         }
 

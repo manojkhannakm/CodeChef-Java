@@ -1,4 +1,4 @@
-package COOK64;
+package OCT16;
 
 import java.io.*;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class SEAARASU {
+class FENWITER {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -31,45 +31,62 @@ class SEAARASU {
 
     private static class Solution {
 
-        private int gcd(int a, int b) {
-            while (b > 0) {
-                int t = b;
-                b = a % b;
-                a = t;
+        private int bitZeroIndex(char[] s) {
+            for (int i = s.length - 1; i >= 0; i--) {
+                if (s[i] == '0') {
+                    return i;
+                }
             }
 
-            return a;
+            return -1;
+        }
+
+        private int bitOneCount(char[] s, int l, int r) {
+            int c = 0;
+
+            for (int i = l; i <= r; i++) {
+                if (s[i] == '1') {
+                    c++;
+                }
+            }
+
+            return c;
         }
 
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
+                char[] l1 = in.next().toCharArray(),
+                        l2 = in.next().toCharArray(),
+                        l3 = in.next().toCharArray();
                 int n = in.nextInt();
 
-                int[] a = new int[n];
+                int x = bitZeroIndex(l3), c;
 
-                for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
-                }
-
-                long s;
-
-                if (n == 1) {
-                    s = a[0];
+                if (x != -1) {
+                    c = bitOneCount(l1, 0, l1.length - 1)
+                            + n * bitOneCount(l2, 0, l2.length - 1)
+                            + bitOneCount(l3, 0, x - 1) + 1;
                 } else {
-                    int g = gcd(a[0], a[1]);
+                    x = bitZeroIndex(l2);
 
-                    for (int j = 2; j < n; j++) {
-                        g = gcd(g, a[j]);
+                    if (x != -1) {
+                        c = bitOneCount(l1, 0, l1.length - 1)
+                                + (n - 1) * bitOneCount(l2, 0, l2.length - 1)
+                                + bitOneCount(l2, 0, x - 1) + 1;
+                    } else {
+                        x = bitZeroIndex(l1);
+
+                        if (x != -1) {
+                            c = bitOneCount(l1, 0, x - 1) + 1;
+                        } else {
+                            c = 1;
+                        }
                     }
-
-                    s = (long) g * n;
                 }
 
-                out.println(s);
+                out.println(c);
             }
         }
 

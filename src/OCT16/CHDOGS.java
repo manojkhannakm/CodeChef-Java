@@ -1,4 +1,4 @@
-package COOK64;
+package OCT16;
 
 import java.io.*;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class SEAARASU {
+class CHDOGS {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -31,45 +31,14 @@ class SEAARASU {
 
     private static class Solution {
 
-        private int gcd(int a, int b) {
-            while (b > 0) {
-                int t = b;
-                b = a % b;
-                a = t;
-            }
-
-            return a;
-        }
-
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                double s = in.nextInt(),
+                        v = in.nextInt();
 
-                int[] a = new int[n];
-
-                for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
-                }
-
-                long s;
-
-                if (n == 1) {
-                    s = a[0];
-                } else {
-                    int g = gcd(a[0], a[1]);
-
-                    for (int j = 2; j < n; j++) {
-                        g = gcd(g, a[j]);
-                    }
-
-                    s = (long) g * n;
-                }
-
-                out.println(s);
+                out.println(s / (1.0 - Math.cos(2.0 * Math.PI / 3.0)) / v);
             }
         }
 

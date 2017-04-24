@@ -1,5 +1,6 @@
+package practice.easy;
+
 import java.io.*;
-import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
@@ -7,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class CHEFFILT_OLD {
+class CHEFFILT {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -30,48 +31,69 @@ class CHEFFILT_OLD {
 
     private static class Solution {
 
-        private int matrixRank(int[][] a, int[] b, int p) {
-            int m = 10,
-                    n = a[0].length,
-                    ans = 0;
+        private static final int MOD = 1000000007;
 
-            boolean used[] = new boolean[m];
+        private void matrixGaussEliminate(int[][] a, int m, int n, int o) {
+            for (int i = 0, j = 0; j < n - 1; j++) {
+                int p = -1,
+                        apj = 0;
 
-            // Using Gauss-Jordan in [ A : b ] to make it in row-echellon form.
-            // So that we can find the rank. We also need to make sure that the
-            // rank of [ A ] is equal to the rank of [A : b], else there are
-            // no solutions
-            for (int j = 0; j < n; j++) {
-                int i = 0;
-                while ((i < m) && (used[i] || (a[i][j] == 0))) {
-                    i++;
-                }
-                if (i == m) continue;
-                ans++;
-                used[i] = true;
-                for (int k = 0; k < m; k++)
-                    if (!used[k]) {
-                        // Find a value of coef equal to (-a[k][j] / a[i][j]);
-                        // we can just try 0,1,..,p-1 until we find one.
-                        int coef = 0;
-                        while ((a[i][j] * coef + a[k][j]) % p != 0) {
-                            coef++;
-                        }
-                        for (int l = 0; l < n; l++) {
-                            a[k][l] = (a[k][l] + a[i][l] * coef) % p;
-                        }
-                        b[k] = (b[k] + b[i] * coef) % p;
+                for (int k = i; k < m; k++) {
+                    int akj = Math.abs(a[k][j]);
+
+                    if (akj > apj) {
+                        p = k;
+                        apj = akj;
                     }
-            }
+                }
 
-            // If rank of [A] is not equal to the rank of [A : b]
-            for (int i = 0; i < m; i++) {
-                if (!used[i] && b[i] != 0) {
+                if (p == -1) {
+                    continue;
+                }
+
+                if (p != i) {
+                    for (int k = 0; k < n; k++) {
+                        int t = a[i][k];
+                        a[i][k] = a[p][k];
+                        a[p][k] = t;
+                    }
+                }
+
+                for (int k = i + 1; k < m; k++) {
+                    int f = 0;
+
+                    while ((a[k][j] + a[i][j] * f) % o != 0) {
+                        f++;
+                    }
+
+                    for (int l = j; l < n; l++) {
+                        a[k][l] = (a[k][l] + a[i][l] * f) % o;
+                    }
+                }
+
+                i++;
+            }
+        }
+
+        private int matrixRank(int[][] a, int m, int n, int o) {
+            matrixGaussEliminate(a, m, n, o);
+
+            int r = 0;
+
+            for (int i = 0, j = 0; i < m; i++) {
+                for (; j < n - 1; j++) {
+                    if (a[i][j] != 0) {
+                        r++;
+                        break;
+                    }
+                }
+
+                if (j == n - 1 && a[i][j] != 0) {
                     return -1;
                 }
             }
 
-            return ans;
+            return r;
         }
 
         public void solve() {
@@ -79,47 +101,36 @@ class CHEFFILT_OLD {
 
             for (int i = 0; i < t; i++) {
                 String s = in.nextLine();
+
                 int n = in.nextInt();
 
                 String[] f = new String[n];
 
                 for (int j = 0; j < n; j++) {
-                    String fj = in.nextLine();
-
-                    f[j] = fj;
+                    f[j] = in.nextLine();
                 }
 
                 int m = 10;
-                int[][] a = new int[m][n];
-                int[] b = new int[m];
+
+                int[][] a = new int[m][n + 1];
 
                 for (int j = 0; j < m; j++) {
                     for (int k = 0; k < n; k++) {
                         a[j][k] = f[k].charAt(j) == '-' ? 0 : 1;
                     }
+
+                    a[j][n] = s.charAt(j) == 'b' ? 0 : 1;
                 }
 
-                for (int j = 0; j < m; j++) {
-                    b[j] = s.charAt(j) == 'b' ? 0 : 1;
-                }
-
-                BigInteger c = BigInteger.ZERO;
-                int r = matrixRank(a, b, 2);
-
-                int[][] x = new int[m][n + 1];
-
-                for (int j = 0; j < m; j++) {
-                    for (int k = 0; k < n; k++) {
-                        x[j][k] = a[j][k];
-                    }
-
-                    x[j][n] = b[j];
-                }
-
-                out.println(Arrays.deepToString(x));
+                int r = matrixRank(a, m, n + 1, 2),
+                        c = 0;
 
                 if (r != -1) {
-                    c = BigInteger.valueOf(2).modPow(BigInteger.valueOf(n - r), BigInteger.valueOf(1000000007));
+                    c = 1;
+
+                    for (int j = 0; j < n - r; j++) {
+                        c = c * 2 % MOD;
+                    }
                 }
 
                 out.println(c);

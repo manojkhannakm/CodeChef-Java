@@ -1,14 +1,16 @@
-package COOK64;
+package JAN17;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 /**
  * @author Manoj Khanna
  */
 
-class SEAARASU {
+class CAPIMOVE {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -31,46 +33,85 @@ class SEAARASU {
 
     private static class Solution {
 
-        private int gcd(int a, int b) {
-            while (b > 0) {
-                int t = b;
-                b = a % b;
-                a = t;
-            }
-
-            return a;
-        }
-
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
                 int n = in.nextInt();
 
-                int[] a = new int[n];
+                int[] p = new int[n];
 
                 for (int j = 0; j < n; j++) {
-                    int aj = in.nextInt();
-
-                    a[j] = aj;
+                    p[j] = in.nextInt();
                 }
 
-                long s;
+                int[] v = new int[n - 1],
+                        u = new int[n - 1];
 
-                if (n == 1) {
-                    s = a[0];
-                } else {
-                    int g = gcd(a[0], a[1]);
+                for (int j = 0; j < n - 1; j++) {
+                    v[j] = in.nextInt();
+                    u[j] = in.nextInt();
+                }
 
-                    for (int j = 2; j < n; j++) {
-                        g = gcd(g, a[j]);
+                HashMap<Integer, Planet> map = new HashMap<>();
+
+                for (int j = 0; j < n; j++) {
+                    Planet planet = new Planet(j + 1, p[j]);
+                    planet.adjList.add(j + 1);
+
+                    map.put(j + 1, planet);
+                }
+
+                for (int j = 0; j < n - 1; j++) {
+                    map.get(v[j]).adjList.add(u[j]);
+                    map.get(u[j]).adjList.add(v[j]);
+                }
+
+                ArrayList<Planet> list = new ArrayList<>(map.values());
+                list.sort((o1, o2) -> Integer.compare(o2.p, o1.p));
+
+                for (int j = 0; j < n; j++) {
+                    if (j > 0) {
+                        out.print(" ");
                     }
 
-                    s = (long) g * n;
+                    Planet planet = map.get(j + 1);
+                    boolean f = false;
+
+                    for (Planet capitalPlanet : list) {
+                        if (!planet.adjList.contains(capitalPlanet.i)) {
+                            out.print(capitalPlanet.i);
+
+                            f = true;
+                            break;
+                        }
+                    }
+
+                    if (!f) {
+                        out.print(0);
+                    }
                 }
 
-                out.println(s);
+                out.println("");
             }
+        }
+
+        private class Planet {
+
+            private final int i, p;
+
+            private ArrayList<Integer> adjList = new ArrayList<>();
+
+            public Planet(int i, int p) {
+                this.i = i;
+                this.p = p;
+            }
+
+            @Override
+            public String toString() {
+                return i + " (" + p + ") -> " + adjList;
+            }
+
         }
 
     }

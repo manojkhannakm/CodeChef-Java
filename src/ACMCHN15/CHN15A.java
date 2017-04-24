@@ -1,4 +1,4 @@
-package COOK64;
+package ACMCHN15;
 
 import java.io.*;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class SEAARASU {
+class CHN15A {
 
     private static InputReader in;
     private static PrintWriter out = new PrintWriter(System.out);
@@ -31,21 +31,12 @@ class SEAARASU {
 
     private static class Solution {
 
-        private int gcd(int a, int b) {
-            while (b > 0) {
-                int t = b;
-                b = a % b;
-                a = t;
-            }
-
-            return a;
-        }
-
         public void solve() {
             int t = in.nextInt();
 
             for (int i = 0; i < t; i++) {
-                int n = in.nextInt();
+                int n = in.nextInt(),
+                        k = in.nextInt();
 
                 int[] a = new int[n];
 
@@ -55,18 +46,12 @@ class SEAARASU {
                     a[j] = aj;
                 }
 
-                long s;
+                int s = 0;
 
-                if (n == 1) {
-                    s = a[0];
-                } else {
-                    int g = gcd(a[0], a[1]);
-
-                    for (int j = 2; j < n; j++) {
-                        g = gcd(g, a[j]);
+                for (int j = 0; j < n; j++) {
+                    if ((a[j] + k) % 7 == 0) {
+                        s++;
                     }
-
-                    s = (long) g * n;
                 }
 
                 out.println(s);
