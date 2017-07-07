@@ -1,4 +1,5 @@
 import java.io.*;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -7,7 +8,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class Template {
+class CHEFCODE {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -37,7 +38,7 @@ class Template {
 
         long t = System.currentTimeMillis();
 
-        new Solution().solve(true);
+        new Solution().solve(false);
 
         if (list.contains("-debug")) {
             out.println("");
@@ -56,7 +57,35 @@ class Template {
         }
 
         private void solve(int t) {
+            int n = in.nextInt();
+            long k = in.nextLong();
 
+            long[] a = in.nextLongArray(n);
+
+            BigInteger m = BigInteger.ZERO;
+
+            for (int i = 1; i < 1 << n; i++) {
+                BigInteger p = BigInteger.ONE;
+
+                boolean b = true;
+
+                for (int j = 0; j < n; j++) {
+                    if ((i >> j & 1) == 1) {
+                        p = p.multiply(BigInteger.valueOf(a[j]));
+
+                        if (p.compareTo(BigInteger.valueOf(k)) >= 0) {
+                            b = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (b) {
+                    m = m.add(BigInteger.ONE);
+                }
+            }
+
+            out.println(m);
         }
 
         public void solve(boolean f) {
@@ -115,7 +144,7 @@ class Template {
             int[] a = new int[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextInt();
+                a[i] = in.nextInt();
             }
 
             return a;
@@ -125,7 +154,7 @@ class Template {
             long[] a = new long[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextLong();
+                a[i] = in.nextLong();
             }
 
             return a;
@@ -135,7 +164,7 @@ class Template {
             float[] a = new float[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextFloat();
+                a[i] = in.nextFloat();
             }
 
             return a;
@@ -145,7 +174,7 @@ class Template {
             double[] a = new double[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextDouble();
+                a[i] = in.nextDouble();
             }
 
             return a;

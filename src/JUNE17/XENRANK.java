@@ -1,3 +1,5 @@
+package JUNE17;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class Template {
+class XENRANK {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -56,7 +58,12 @@ class Template {
         }
 
         private void solve(int t) {
+            int u = in.nextInt(),
+                    v = in.nextInt();
 
+            long n = u + v + 1;
+
+            System.out.println(n * (n + 1) / 2 - v);
         }
 
         public void solve(boolean f) {

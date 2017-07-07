@@ -1,13 +1,13 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import java.util.*;
 
 /**
  * @author Manoj Khanna
  */
 
-class Template {
+class COOK82B {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -37,7 +37,7 @@ class Template {
 
         long t = System.currentTimeMillis();
 
-        new Solution().solve(true);
+        new Solution().solve(false);
 
         if (list.contains("-debug")) {
             out.println("");
@@ -56,7 +56,55 @@ class Template {
         }
 
         private void solve(int t) {
+            int n = in.nextInt();
 
+            int[] a = in.nextIntArray(n);
+
+            long x = 1;
+
+            for (int i = 0; i < n; i++) {
+                x = x * a[i] % MOD;
+            }
+
+            PollardRho.factor(BigInteger.valueOf(x));
+
+            boolean b = true;
+            int f = -1;
+
+            for (Map.Entry<Integer, Integer> entry : PollardRho.m.entrySet()) {
+                if (f == -1) {
+                    f = entry.getValue();
+                } else {
+                    if (f != entry.getValue()) {
+                        b = false;
+                        break;
+                    }
+                }
+            }
+
+            if (b) {
+                out.println("justdoit");
+                return;
+            }
+
+            long y = 1;
+
+            for (Map.Entry<Integer, Integer> entry : PollardRho.m.entrySet()) {
+                Integer p = entry.getKey(),
+                        q = entry.getValue();
+
+                if (q < n + 1) {
+                    for (int i = 0; i < (n + 1) - q; i++) {
+                        y = y * p % MOD;
+                    }
+                } else if (q > n + 1) {
+                    for (int i = 0; i < q - (n + 1); i++) {
+                        y = y * p % MOD;
+                    }
+                }
+            }
+
+            out.println(y);
         }
 
         public void solve(boolean f) {
@@ -65,6 +113,61 @@ class Template {
             for (int i = 1; i <= t; i++) {
                 solve(i);
             }
+        }
+
+        public static class PollardRho {
+
+            private final static BigInteger ZERO = new BigInteger("0");
+            private final static BigInteger ONE = new BigInteger("1");
+            private final static BigInteger TWO = new BigInteger("2");
+            private final static SecureRandom random = new SecureRandom();
+
+            static HashMap<Integer, Integer> m = new HashMap<>();
+
+            public static BigInteger rho(BigInteger N) {
+
+                BigInteger divisor;
+                BigInteger c = new BigInteger(N.bitLength(), random);
+                BigInteger x = new BigInteger(N.bitLength(), random);
+                BigInteger xx = x;
+
+                if (N.mod(TWO).compareTo(ZERO) == 0) return TWO;
+
+                do {
+                    x = x.multiply(x).mod(N).add(c).mod(N);
+                    xx = xx.multiply(xx).mod(N).add(c).mod(N);
+                    xx = xx.multiply(xx).mod(N).add(c).mod(N);
+                    divisor = x.subtract(xx).gcd(N);
+                } while ((divisor.compareTo(ONE)) == 0);
+
+                return divisor;
+            }
+
+            public static void factor(BigInteger N) {
+
+                if (N.compareTo(ONE) == 0) return;
+
+                if (N.isProbablePrime(20)) {
+                    int n = N.intValue();
+
+                    Integer i = m.get(n);
+
+                    if (i == null) {
+                        i = 0;
+                    }
+
+                    i++;
+
+                    m.put(n, i);
+
+                    return;
+                }
+
+                BigInteger divisor = rho(N);
+                factor(divisor);
+                factor(N.divide(divisor));
+            }
+
         }
 
     }
@@ -115,7 +218,7 @@ class Template {
             int[] a = new int[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextInt();
+                a[i] = in.nextInt();
             }
 
             return a;
@@ -125,7 +228,7 @@ class Template {
             long[] a = new long[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextLong();
+                a[i] = in.nextLong();
             }
 
             return a;
@@ -135,7 +238,7 @@ class Template {
             float[] a = new float[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextFloat();
+                a[i] = in.nextFloat();
             }
 
             return a;
@@ -145,7 +248,7 @@ class Template {
             double[] a = new double[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextDouble();
+                a[i] = in.nextDouble();
             }
 
             return a;

@@ -1,5 +1,8 @@
+package COOK82;
+
 import java.io.*;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -7,7 +10,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class Template {
+class COOK82A {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -56,7 +59,18 @@ class Template {
         }
 
         private void solve(int t) {
+            HashMap<String, Integer> map = new HashMap<>();
 
+            for (int i = 0; i < 4; i++) {
+                map.put(in.next(), in.nextInt());
+            }
+
+            if (map.get("RealMadrid") < map.get("Malaga")
+                    && map.get("Barcelona") > map.get("Eibar")) {
+                out.println("Barcelona");
+            } else {
+                out.println("RealMadrid");
+            }
         }
 
         public void solve(boolean f) {
@@ -115,7 +129,7 @@ class Template {
             int[] a = new int[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextInt();
+                a[i] = in.nextInt();
             }
 
             return a;
@@ -125,7 +139,7 @@ class Template {
             long[] a = new long[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextLong();
+                a[i] = in.nextLong();
             }
 
             return a;
@@ -135,7 +149,7 @@ class Template {
             float[] a = new float[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextFloat();
+                a[i] = in.nextFloat();
             }
 
             return a;
@@ -145,7 +159,7 @@ class Template {
             double[] a = new double[n];
 
             for (int i = 0; i < n; i++) {
-                a[i] = nextDouble();
+                a[i] = in.nextDouble();
             }
 
             return a;

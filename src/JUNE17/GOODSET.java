@@ -1,3 +1,5 @@
+package JUNE17;
+
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class Template {
+class GOODSET {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -52,11 +54,46 @@ class Template {
 
         private static final int MOD = 1000000007;
 
+        private boolean[] a = new boolean[510];
+
         public Solution() {
+            for (int i = 1; i <= 500; i++) {
+                a[i] = true;
+            }
+
+            for (int i = 1; i <= 500; i++) {
+                if (!a[i]) {
+                    continue;
+                }
+
+                for (int j = 1; j < i; j++) {
+                    if (!a[j]) {
+                        continue;
+                    }
+
+                    if (i + j <= 500) {
+                        a[i + j] = false;
+                    }
+                }
+            }
         }
 
         private void solve(int t) {
+            int n = in.nextInt();
 
+            for (int i = 1, j = 0; i <= 500 && j < n; i++) {
+                if (a[i]) {
+                    if (j > 0) {
+                        out.print(" ");
+                    }
+
+                    out.print(i);
+
+                    j++;
+                }
+            }
+
+            out.println("");
         }
 
         public void solve(boolean f) {

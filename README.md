@@ -1,4 +1,4 @@
-# CodeChef-Java
+# CodeChef Java
 
 My solutions for 100+ problems solved on [CodeChef](https://www.codechef.com).
 

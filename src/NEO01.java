@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class Template {
+class NEO01 {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -56,7 +56,23 @@ class Template {
         }
 
         private void solve(int t) {
+            int n = in.nextInt();
 
+            int[] a = in.nextIntArray(n);
+
+            long p = 0, q = 0, c = 0;
+
+            for (int ai : a) {
+                if (ai < 0) {
+                    p += ai;
+                } else {
+                    q += ai;
+
+                    c++;
+                }
+            }
+
+            out.println(p + c * q);
         }
 
         public void solve(boolean f) {
