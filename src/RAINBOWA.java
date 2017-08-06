@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
  * @author Manoj Khanna
  */
 
-class Template {
+class RAINBOWA {
 
     private static InputReader in;
     private static PrintWriter out;
@@ -76,9 +76,9 @@ class Template {
         }
 
         public void solve() {
-            int t = SINGLE_TEST ? 1 : in.nextInt();
+            int n = SINGLE_TEST ? 1 : in.nextInt();
 
-            for (int i = 1; i <= t; i++) {
+            for (int i = 1; i <= n; i++) {
                 solve(i);
             }
         }
