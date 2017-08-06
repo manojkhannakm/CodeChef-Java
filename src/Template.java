@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -13,35 +11,50 @@ class Template {
     private static PrintWriter out;
 
     public static void main(String[] args) {
-        List<String> list = Arrays.asList(args);
+        String input = null, output = null;
+        boolean debug = false;
 
-        if (!list.contains("-in")) {
+        for (int i = 0; i < args.length; i++) {
+            switch (args[i]) {
+                case "-i":
+                    input = args[i + 1];
+                    break;
+                case "-o":
+                    output = args[i + 1];
+                    break;
+                case "-d":
+                    debug = true;
+                    break;
+            }
+        }
+
+        if (input == null) {
             in = new InputReader(System.in);
         } else {
             try {
-                in = new InputReader(new FileInputStream("in.txt"));
+                in = new InputReader(new FileInputStream(input));
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        if (!list.contains("-out")) {
+        if (output == null) {
             out = new PrintWriter(System.out, true);
         } else {
             try {
-                out = new PrintWriter(new FileOutputStream("out.txt"), true);
+                out = new PrintWriter(new FileOutputStream(output), true);
             } catch (FileNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        long t = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
 
-        new Solution().solve(true);
+        new Solution().solve();
 
-        if (list.contains("-debug")) {
+        if (debug) {
             out.println("");
-            out.println("Run time: " + ((System.currentTimeMillis() - t) / 1000.0f) + "s");
+            out.println("Run time: " + ((System.currentTimeMillis() - time) / 1000.0f) + "s");
         }
 
         in.close();
@@ -50,45 +63,66 @@ class Template {
 
     private static class Solution {
 
+        private static final boolean SINGLE_TEST = true;
+
         private static final int MOD = 1000000007;
 
         public Solution() {
+
         }
 
         private void solve(int t) {
 
         }
 
-        public void solve(boolean f) {
-            int t = f ? in.nextInt() : 1;
+        public void solve() {
+            int n = SINGLE_TEST ? 1 : in.nextInt();
 
-            for (int i = 1; i <= t; i++) {
+            for (int i = 1; i <= n; i++) {
                 solve(i);
             }
         }
 
     }
 
-    @SuppressWarnings("UnusedDeclaration")
     private static class InputReader {
 
-        private BufferedReader bufferedReader;
+        private final BufferedReader bufferedReader;
+
         private StringTokenizer stringTokenizer;
 
         public InputReader(InputStream inputStream) {
             bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         }
 
+        private String readLine() {
+            String line;
+
+            try {
+                line = bufferedReader.readLine();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            if (line == null) {
+                throw new NullPointerException();
+            }
+
+            return line;
+        }
+
         public String next() {
             while (stringTokenizer == null || !stringTokenizer.hasMoreTokens()) {
-                try {
-                    stringTokenizer = new StringTokenizer(bufferedReader.readLine());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                stringTokenizer = new StringTokenizer(readLine());
             }
 
             return stringTokenizer.nextToken();
+        }
+
+        public String nextLine() {
+            stringTokenizer = null;
+
+            return readLine();
         }
 
         public char nextChar() {
@@ -149,26 +183,6 @@ class Template {
             }
 
             return a;
-        }
-
-        public String nextLine() {
-            stringTokenizer = null;
-
-            try {
-                String line;
-
-                do {
-                    line = bufferedReader.readLine();
-                } while (line != null && line.isEmpty());
-
-                if (line == null) {
-                    throw new NullPointerException();
-                }
-
-                return line;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         public void close() {
